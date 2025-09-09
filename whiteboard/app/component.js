@@ -11,7 +11,7 @@ export default function WhiteboardCanvas(){
     const [CurrentColor, setCurrentColor] = useState('blank');
     const [lineWidth, setLineWidth] = useState(3);
     const [drawingActions, setDrawingActions] = useState([]);
-    const [currentStyle, setCurrentSyle] = useState({color : 'blank', lineWidth: 3})
+    const [currentStyle, setCurrentSyle] = useState({color : 'blank', lineWidth: 3});
 
     useEffect(( ) => {
         if( canvasRef.current ) {
@@ -25,8 +25,29 @@ export default function WhiteboardCanvas(){
     }, []);
 
     const startDrawing =(e) => {
-        
+        if(context){
+            context.beginPath();
+            context.moveTo(e.nativeEvent.offsetX, e.nativeEvent.offsetY );
+            setDrawing(true);
+        }
+    };
+
+    const draw = (e)=> {
+        if(!drawing) return;
+        if(context) {
+            context.strokeStyle = currentStyle.color;
+            context.lineWidth = currentStyle.lineWidth;
+            context.lineTo(e.nativeEvent.offsetX, e.nativeEvent.offsetY )
+            context.stroke();
+            setCurrentPath([...currentPath,{x:e.nativeEvent.offsetX, y: e.nativeEvent.offsetY}])
+        }
+    };
+
+    const endDrawing = () => {
+        setDrawing(false)
+        context && context.closePath();
+        if(currentPath.lenght >0) {
+            setDrawingActions([])
+        }
     }
-
-
 }
