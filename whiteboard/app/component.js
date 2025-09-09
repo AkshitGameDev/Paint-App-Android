@@ -47,7 +47,36 @@ export default function WhiteboardCanvas(){
         setDrawing(false)
         context && context.closePath();
         if(currentPath.lenght >0) {
-            setDrawingActions([])
+            setDrawingActions([]);
+        }
+        setCurrentPath([]);
+    };
+
+    const changeColor = (color) => {
+        setCurrentColor(color);
+        setCurrentSyle({...currentStyle, color});
+    };
+
+    const changeWidth = (width) => {
+        setLineWidth(width);
+        setCurrentSyle({...currentStyle, lineWidth:width});
+    };
+    const undoDrawing = () =>{
+        if(drawingActions.length > 0) {
+            drawingActions.pop();
+            const newContext = canvasRef.current.getContext('2d');
+            newContext.clearRect(0,0,canvasRef.current.width, canvasRef.current.hight);
+
+            drawingActions.forEach(({path, style}) => {
+                newContext.beginPath();
+                newContext.strokeStyle = style.color;
+                newContext.lineWidth = style.lineWidth;
+                newContext.moveTo(path[0].c, path[0].y);
+                path.forEach((point) =>{
+                    newContext.lineTo(point.x, point.y);
+                });
+                newContext.stroke();
+            });
         }
     }
-}
+};
