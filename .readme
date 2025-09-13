@@ -1,0 +1,4 @@
+clone the repo 
+
+type 'cd .\whiteboard\' in terminal
+type npm run dev
