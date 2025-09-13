@@ -125,6 +125,38 @@ export default function WhiteboardCanvas() {
         className='border border-gray-400'
         style={{ border: '1px solid #ccc', cursor: 'crosshair', display: 'block' }}
       />
+
+      <div className="flex my-4">
+        <div className="flex justify-center gap-4">
+          {(['red','blue','yellow','green','orange','black'] as const).map((c) => (
+            <button
+              key={c}
+              onClick={() => changeColor(c)}
+              className="w-8 h-8 rounded-full border cursor-pointer"
+              style={{ backgroundColor: c }}
+              aria-label={`Set color ${c}`}
+            />
+          ))}
+        </div>
+
+        <div className="flex items-center gap-2 ml-6">
+          {[2, 4, 8, 12].map((w) => (
+            <button
+              key={w}
+              onClick={() => changeWidth(w)}
+              className="px-2 py-1 border rounded"
+            >
+            {w}px
+          </button>
+        ))}
+      </div>
+
+      <button onClick={undoDrawing} className="ml-6 px-3 py-1 border rounded">Undo</button>
+      <button onClick={clearDrawing} className="ml-2 px-3 py-1 border rounded">Clear</button>
+      </div>
     </div>
+
+    
+
   )
 }
